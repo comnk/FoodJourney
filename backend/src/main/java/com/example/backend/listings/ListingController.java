@@ -1,5 +1,7 @@
 package com.example.backend.listings;
 
+import java.util.List;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,8 @@ public class ListingController {
     }
 
     @GetMapping("/new")
-    public String getListings(Model model) {
-        return "Listings will appear here!";
+    public List<Listing> getListings(Model model) {
+        return listingService.getListings();
     }
 
     @GetMapping("/{id}")
