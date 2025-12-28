@@ -1,0 +1,31 @@
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  padding: 2rem 0;
+}
+
+.carousel-track {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 1rem;
+  animation: autoplay 30s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes autoplay {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
