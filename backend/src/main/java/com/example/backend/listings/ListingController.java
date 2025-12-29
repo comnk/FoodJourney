@@ -3,12 +3,14 @@ package com.example.backend.listings;
 import java.util.List;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/listing")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ListingController {
 
     private final ListingService listingService;
@@ -20,6 +22,11 @@ public class ListingController {
     @GetMapping("/new")
     public List<Listing> getListings(Model model) {
         return listingService.getListings();
+    }
+
+    @GetMapping("/test")
+    public String testListing() {
+        return "TEST!";
     }
 
     @GetMapping("/{id}")
