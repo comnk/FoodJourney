@@ -1,11 +1,11 @@
 services:
   db:
     container_name: spring-boot-db
-    image: 'postgres:latest'
+    image: "postgres:latest"
 
     ports:
-      - 5432:5432
-    
+      - 5332:5432
+
     environment:
       POSTGRES_USER: postgres # The PostgreSQL user (useful to connect to the database)
       POSTGRES_PASSWORD: JALENlewis2023!$ # The PostgreSQL password (useful to connect to the database)

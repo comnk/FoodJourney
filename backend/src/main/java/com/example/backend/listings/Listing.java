@@ -17,16 +17,28 @@ public class Listing {
     public String description;
     public String category;
     public String swapType;
-    public boolean indicator;
+    public String indicator;
 
     protected Listing() {
     }
 
-    public Listing(String title, String description, String category, String swapType, boolean indicator) {
+    public Listing(String title, String description, String category, String swapType, String indicator) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.swapType = swapType;
         this.indicator = indicator;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
