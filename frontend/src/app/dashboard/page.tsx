@@ -1,26 +1,30 @@
-"use client";
-
-import Navbar from "@/components/navbar/navbar";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import Navbar from "@/components/Navbar/Navbar";
+import "./dashboard.scss";
+import Link from "next/link";
 
 export default function DashboardPage() {
-  const [listing, setListing] = useState("");
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/listing/test")
-      .then((res) => setListing(res.data)) // already JSON
-      .catch((err) => console.error("Error:", err));
-  }, []);
-
   return (
-    <>
+    <div>
       <Navbar />
-      <div>
-        <h2>Backend Response</h2>
-        <p>{listing}</p>
+      <h1>Dashboard</h1>
+      <p>
+        Welcome to the dashboard! Here you can find an overview of your recent
+        trips and activities.
+      </p>
+      <div className="trips-section">
+        <h2>Your Trips</h2>
+        <div>
+          <button>
+            <Link href="">New Trip</Link>
+          </button>
+        </div>
       </div>
-    </>
+      <div className="meals-section">
+        <h2>Your Meals</h2>
+      </div>
+      <div className="routes-section">
+        <h2>Your Routes</h2>
+      </div>
+    </div>
   );
 }

@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=Petit+Formal+Script&display=swap');
+
+// ── Variables ─────────────────────────────────────────────────────────────────
+:root {
+  --cream:          #f7f0e2;
+  --cream-warm:     #f0e6cc;
+  --cream-deep:     #e4d5b0;
+  --cream-shadow:   #c9b98a;
+  --ink-dark:       #1c1208;
+  --ink-brown:      #3d2810;
+  --ink-mid:        #5c3d1e;
+  --ink-faded:      #7a5534;
+  --burgundy:       #6b1a2a;
+  --burgundy-light: #8c2d40;
+  --olive:          #4a5240;
+  --olive-light:    #6b7560;
+  --gold:           #9a7528;
+  --gold-light:     #c49a3c;
+  --tag-bg:         #e8dcc4;
+  --tag-border:     #b09060;
+  --rule-color:     #b09060;
+  --page-stain-1:   rgba(160, 100, 30, 0.06);
+  --page-stain-2:   rgba(120, 70,  20, 0.08);
+}
+
+// ── Book Wrapper ──────────────────────────────────────────────────────────────
+.book-wrapper {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  min-height:      100vh;
+  padding:         2.5rem 1rem 3rem;
+
+  // Dark olive/leather tablecloth texture
+  background-color: #1a1608;
+  background-image:
+    radial-gradient(ellipse at 15% 85%, rgba(70, 50, 10, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(50, 30,  5, 0.60) 0%, transparent 55%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px, transparent 5px,
+      rgba(255,255,255,0.012) 5px, rgba(255,255,255,0.012) 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 5px,
+      rgba(255,255,255,0.008) 5px, rgba(255,255,255,0.008) 6px
+    );
+}
+
+// ── Title Plate ───────────────────────────────────────────────────────────────
+.book-title-plate {
+  text-align:    center;
+  margin-bottom: 1.6rem;
+}
+
+.book-title-ornament-row {
+  display:     flex;
+  align-items: center;
+  gap:         0.6rem;
+  justify-content: center;
+  margin:      0.3rem 0;
+}
+
+.ornament-line {
+  flex:             1;
+  max-width:        80px;
+  height:           1px;
+  background:       linear-gradient(to right, transparent, var(--gold-light), transparent);
+  opacity:          0.6;
+}
+
+.ornament-glyph {
+  font-size:  0.9rem;
+  color:      var(--gold-light);
+  opacity:    0.75;
+  line-height: 1;
+}
+
+.book-title {
+  font-family:    'Playfair Display', serif;
+  font-style:     italic;
+  font-weight:    700;
+  font-size:      clamp(1.2rem, 3.5vw, 1.9rem);
+  color:          var(--cream);
+  letter-spacing: 0.04em;
+  margin:         0.25rem 0 0.1rem;
+  text-shadow:    0 2px 16px rgba(0,0,0,0.8);
+}
+
+.book-subtitle {
+  font-family:    'Lora', serif;
+  font-style:     italic;
+  font-size:      0.7rem;
+  color:          var(--cream-shadow);
+  letter-spacing: 0.08em;
+  margin:         0;
+  opacity:        0.7;
+}
+
+// ── Flipbook shadow ───────────────────────────────────────────────────────────
+.my-book {
+  filter:
+    drop-shadow(0 10px 40px rgba(0,0,0,0.85))
+    drop-shadow(0 2px 8px  rgba(0,0,0,0.6));
+}
+
+// ── Base Page ─────────────────────────────────────────────────────────────────
+.demoPage {
+  background-color: var(--cream-warm);
+  width:  100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  // Grain overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+    background-size: 250px 250px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+  }
+
+  // Edge vignette — aged page curl effect
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 50%, rgba(100, 65, 15, 0.2) 100%),
+      linear-gradient(to bottom, rgba(160, 110, 40, 0.07) 0%, transparent 20%, transparent 80%, rgba(100, 65, 15, 0.1) 100%);
+    pointer-events: none;
+    z-index: 11;
+  }
+}
+
+// ── Page Inner ────────────────────────────────────────────────────────────────
+.page-inner {
+  position:  absolute;
+  inset:     0;
+  padding:   24px 22px 28px;
+  display:   flex;
+  flex-direction: column;
+  z-index:   5;
+}
+
+// ── Image Page ────────────────────────────────────────────────────────────────
+.demoPage--image {
+  background-color: #ede4c8;
+  background-image:
+    radial-gradient(ellipse at 80% 10%, var(--page-stain-1) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 90%, var(--page-stain-2) 0%, transparent 50%);
+}
+
+// Datestamp header on image page
+.entry-datestamp {
+  text-align:  center;
+  margin-bottom: 10px;
+}
+
+.datestamp-location {
+  font-family:    'Playfair Display', serif;
+  font-style:     italic;
+  font-size:      0.7rem;
+  color:          var(--burgundy);
+  letter-spacing: 0.04em;
+}
+
+.datestamp-divider {
+  color: var(--cream-shadow);
+  font-size: 0.65rem;
+}
+
+.datestamp-date {
+  font-family:    'Lora', serif;
+  font-size:      0.63rem;
+  color:          var(--ink-faded);
+  letter-spacing: 0.03em;
+}
+
+// Image frame
+.image-placeholder {
+  flex:    1;
+  display: flex;
+  align-items:    center;
+  justify-content: center;
+  padding: 4px 4px 8px;
+}
+
+.image-placeholder__frame {
+  width:     100%;
+  height:    100%;
+  max-height: 310px;
+  border:    1.5px solid var(--rule-color);
+  position:  relative;
+  display:   flex;
+  align-items:    center;
+  justify-content: center;
+  background: rgba(255,255,255,0.15);
+
+  // Ornate corner brackets
+  &::before, &::after {
+    content:  '';
+    position: absolute;
+    width:    16px;
+    height:   16px;
+    border-style: solid;
+    border-color: var(--gold);
+  }
+  &::before {
+    top: -3px; left: -3px;
+    border-width: 2.5px 0 0 2.5px;
+  }
+  &::after {
+    bottom: -3px; right: -3px;
+    border-width: 0 2.5px 2.5px 0;
+  }
+}
+
+.image-placeholder__inner {
+  width:  calc(100% - 20px);
+  height: calc(100% - 20px);
+  border: 1px dashed var(--cream-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items:    center;
+  justify-content: center;
+  gap: 5px;
+  padding: 12px;
+  position: relative;
+
+  &::before, &::after {
+    content:  '';
+    position: absolute;
+    width:    10px;
+    height:   10px;
+    border-style: solid;
+    border-color: var(--gold);
+    opacity: 0.55;
+  }
+  &::before { top: 4px; right: 4px; border-width: 1.5px 1.5px 0 0; }
+  &::after  { bottom: 4px; left: 4px; border-width: 0 0 1.5px 1.5px; }
+}
+
+.image-placeholder__icon {
+  font-size:  2rem;
+  color:      var(--cream-shadow);
+  opacity:    0.45;
+  line-height: 1;
+}
+
+.image-placeholder__label {
+  font-family:    'Lora', serif;
+  font-style:     italic;
+  font-size:      0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:          var(--ink-faded);
+  opacity:        0.55;
+  margin: 0;
+}
+
+.image-placeholder__caption {
+  font-family: 'Lora', serif;
+  font-style:  italic;
+  font-size:   0.6rem;
+  color:       var(--ink-mid);
+  text-align:  center;
+  line-height: 1.55;
+  margin:      4px 0 0;
+  opacity:     0.7;
+  max-width:   180px;
+}
+
+// Tags
+.tag-row {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        5px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.tag {
+  font-family:    'Lora', serif;
+  font-size:      0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          var(--olive);
+  background:     var(--tag-bg);
+  border:         1px solid var(--tag-border);
+  padding:        2px 7px;
+  border-radius:  1px;
+  opacity:        0.85;
+}
+
+// ── Text Page ─────────────────────────────────────────────────────────────────
+.demoPage--text {
+  background-color: #f4ead0;
+  background-image:
+    radial-gradient(ellipse at 10% 10%,  var(--page-stain-1) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 90%,  var(--page-stain-2) 0%, transparent 45%);
+}
+
+.chapter-header {
+  text-align:    center;
+  margin-bottom: 12px;
+}
+
+.chapter-rule {
+  height:     1px;
+  background: linear-gradient(to right, transparent, var(--rule-color), transparent);
+  margin:     0 0 10px;
+
+  &--thin {
+    opacity: 0.5;
+    margin:  6px 0 0;
+  }
+}
+
+.entry-title {
+  font-family:    'Playfair Display', serif;
+  font-style:     italic;
+  font-weight:    700;
+  font-size:      1.05rem;
+  color:          var(--ink-dark);
+  margin:         0 0 4px;
+  line-height:    1.25;
+  letter-spacing: 0.01em;
+}
+
+.entry-rating {
+  font-size:      0.55rem;
+  color:          var(--gold);
+  letter-spacing: 0.35em;
+  margin:         0;
+  opacity:        0.85;
+}
+
+.chapter-body {
+  font-family: 'Lora', serif;
+  font-size:   0.79rem;
+  line-height: 1.9;
+  color:       var(--ink-brown);
+  text-align:  justify;
+  hyphens:     auto;
+  flex:        1;
+  margin:      0;
+
+  // Drop cap
+  &::first-letter {
+    font-family:  'Playfair Display', serif;
+    font-style:   italic;
+    font-weight:  700;
+    font-size:    3.4em;
+    float:        left;
+    line-height:  0.72;
+    margin-right: 0.05em;
+    margin-top:   0.1em;
+    color:        var(--burgundy);
+  }
+}
+
+// ── Entry Footer ──────────────────────────────────────────────────────────────
+.entry-footer {
+  margin-top:  auto;
+  padding-top: 10px;
+}
+
+.footer-rule {
+  height:     1px;
+  background: linear-gradient(to right, transparent, var(--cream-shadow), transparent);
+  opacity:    0.55;
+  margin-bottom: 6px;
+}
+
+.entry-footer-note {
+  font-family:    'Lora', serif;
+  font-style:     italic;
+  font-size:      0.6rem;
+  color:          var(--ink-faded);
+  text-align:     right;
+  margin:         0;
+  opacity:        0.65;
+  letter-spacing: 0.02em;
+}
+
+// ── Page Numbers ──────────────────────────────────────────────────────────────
+.page-number {
+  font-family:    'Lora', serif;
+  font-style:     italic;
+  font-size:      0.6rem;
+  color:          var(--ink-faded);
+  opacity:        0.45;
+  margin-top:     6px;
+  letter-spacing: 0.08em;
+
+  &--left  { text-align: left;  }
+  &--right { text-align: right; }
+}
+
+// ── Flip Hint ─────────────────────────────────────────────────────────────────
+.flip-hint {
+  margin-top:     1.2rem;
+  font-family:    'Lora', serif;
+  font-style:     italic;
+  font-size:      0.67rem;
+  color:          var(--cream-shadow);
+  opacity:        0.45;
+  letter-spacing: 0.06em;
+}
