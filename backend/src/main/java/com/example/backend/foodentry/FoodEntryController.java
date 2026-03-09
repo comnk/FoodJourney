@@ -43,6 +43,12 @@ public class FoodEntryController {
         return ResponseEntity.ok(entry);
     }
 
+    @GetMapping("/my_entries")
+    public ResponseEntity<Iterable<FoodEntry>> getAllFoodEntries(@AuthenticationPrincipal UserDetails userDetails) {
+        Iterable<FoodEntry> entries = service.getFoodEntriesByUsername(userDetails.getUsername());
+        return ResponseEntity.ok(entries);
+    }
+
     @PostMapping("/{id}/photo")
     public ResponseEntity<String> uploadPhoto(
             @PathVariable Long id,

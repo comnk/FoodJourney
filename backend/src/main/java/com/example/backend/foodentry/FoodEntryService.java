@@ -26,6 +26,12 @@ public class FoodEntryService {
         this.userRepository = userRepository;
     }
 
+    public Iterable<FoodEntry> getFoodEntriesByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findByUser(user);
+    }
+
     public FoodEntry getFoodEntry(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
     }
