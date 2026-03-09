@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +31,15 @@ public class FoodEntryController {
     @PostMapping("/new")
     public ResponseEntity<FoodEntry> createFoodEntry(
             @RequestParam String restaurantName,
-            @RequestParam String dishName) {
-        FoodEntry entry = service.createFoodEntry(restaurantName, dishName);
+            @RequestParam String dishName,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        FoodEntry entry = service.createFoodEntry(restaurantName, dishName, userDetails.getUsername());
+        return ResponseEntity.ok(entry);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FoodEntry> getFoodEntry(@PathVariable Long id) {
+        FoodEntry entry = service.getFoodEntry(id);
         return ResponseEntity.ok(entry);
     }
 

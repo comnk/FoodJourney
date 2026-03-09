@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import "./FoodEntryForm.scss";
+import { useRouter } from "next/navigation";
 
 export default function FoodEntryForm() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<{
     restaurantName: string;
     dishName: string;
@@ -32,6 +35,9 @@ export default function FoodEntryForm() {
         `http://localhost:8080/api/food_entry/new?${params.toString()}`,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           body: formData.photo,
         },
       );
@@ -58,6 +64,7 @@ export default function FoodEntryForm() {
           dishName: "",
           photo: null,
         });
+        router.push(`/food_entry/${entry.id}`);
       } else {
         console.error("Photo upload failed:", photoResponse.statusText);
       }

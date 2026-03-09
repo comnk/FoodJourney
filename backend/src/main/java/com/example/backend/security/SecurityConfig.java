@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/login").permitAll()
                         .requestMatchers("/api/user/logout").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/food_entry/new").authenticated()
                         .requestMatchers("/api/food_entry/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

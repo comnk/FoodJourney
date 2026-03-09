@@ -35,7 +35,7 @@ export default function Navbar() {
         window.dispatchEvent(new Event("storage"));
         setLoggedIn(false);
         console.log("Logout successful");
-        router.push("/login");
+        router.push("/");
       } else {
         console.error("Logout failed: ", response.statusText);
       }
@@ -46,20 +46,25 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link href="/" className="logo">
+      <span
+        className="logo"
+        style={{ cursor: "pointer" }}
+        onClick={() => router.push(loggedIn ? "/dashboard" : "/")}
+      >
         FoodJourney
-      </Link>
+      </span>
 
       <ul className="nav-links">
         <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li>
-          <Link href="/food_entry/new">Add Food Entry</Link>
+          {loggedIn ? (
+            <Link href="/food_entry/new">Add Food Entry</Link>
+          ) : (
+            <Link href="/about">About</Link>
+          )}
         </li>
         <li>
           {loggedIn ? (
-            <button onClick={handleLogout} className="logout-btn">
+            <button onClick={handleLogout} className="login-btn">
               Log out
             </button>
           ) : (

@@ -30,7 +30,8 @@ public class UserService {
     }
 
     public boolean authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist in the database"));
 
         if (!user.getUsername().equals(username)) {
             throw new UsernameNotFoundException("User does not exist in the database");

@@ -29,13 +29,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain chain) throws ServletException, IOException {
         String jwt = getJwtFromRequest(request);
 
-        if (jwt != null && jwtTokenUtil.validateToken(jwt, jwtTokenUtil.getUsernameFromToken(jwt))) {
-            String username = jwtTokenUtil.getUsernameFromToken(jwt);
-            var userDetails = customUserDetailsService.loadUserByUsername(username);
-            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                    userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (jwt != null) {
+            try {
+                String username = jwtTokenUtil.getUsernameFromToken(jwt);
+                if (username != null && jwtTokenUtil.validateToken(jwt, username)) {
+                    var userDetails = customUserDetailsService.loadUserByUsername(username);
+                    var authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                            userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                logger.error("Could not set user authentication in security context", e);
+            }
         }
 
         chain.doFilter(request, response);
@@ -44,8 +50,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            String token = bearerToken.substring(7);
+            return token.isBlank() || token.equals("null") ? null : token;
         }
+
         return null;
     }
 }

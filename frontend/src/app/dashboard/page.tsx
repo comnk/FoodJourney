@@ -9,13 +9,13 @@ export default function DashboardPage() {
       <h1>Dashboard</h1>
       <p>
         Welcome to the dashboard! Here you can find an overview of your recent
-        trips and activities.
+        food entries and activities.
       </p>
       <div className="trips-section">
-        <h2>Your Trips</h2>
+        <h2>Your Food Entries</h2>
         <div>
           <button>
-            <Link href="">New Trip</Link>
+            <Link href="/food_entry/new">New Food Entry</Link>
           </button>
         </div>
       </div>

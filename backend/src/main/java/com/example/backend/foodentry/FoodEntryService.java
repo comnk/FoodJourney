@@ -12,19 +12,31 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.users.User;
+import com.example.backend.users.UserRepository;
+
 @Service
 public class FoodEntryService {
     private final FoodEntryRepository repository;
+    private final UserRepository userRepository;
     private static final String UPLOAD_DIR = "uploads/photos/";
 
-    public FoodEntryService(FoodEntryRepository repository) {
+    public FoodEntryService(FoodEntryRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
-    public FoodEntry createFoodEntry(String restaurantName, String dishName) {
+    public FoodEntry getFoodEntry(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
+    }
+
+    public FoodEntry createFoodEntry(String restaurantName, String dishName, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         FoodEntry entry = new FoodEntry();
         entry.setRestaurantName(restaurantName);
         entry.setDishName(dishName);
+        entry.setUser(user);
         return repository.save(entry);
     }
 
