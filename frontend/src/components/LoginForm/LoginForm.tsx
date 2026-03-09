@@ -20,6 +20,7 @@ export default function LoginForm() {
     try {
       const response = await fetch("http://localhost:8080/api/user/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -27,9 +28,13 @@ export default function LoginForm() {
       });
 
       if (response.ok) {
+        const token = await response.text();
+        localStorage.setItem("token", token);
+        window.dispatchEvent(new Event("storage"));
         router.push("/dashboard");
       } else {
-        console.error("Login failed: ", response.statusText);
+        const errorMessage = await response.text();
+        console.error("Login failed:", response.status, errorMessage);
       }
     } catch (error) {
       console.error("Login failed:", error);

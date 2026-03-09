@@ -46,8 +46,9 @@ export default function RegisterForm() {
       if (response.ok) {
         router.push("/login");
       } else {
-        const data = await response.json();
-        setError(data.message || "Registration failed!");
+        const text = await response.text();
+        const data = text ? JSON.parse(text) : {};
+        setError(data.message || `Registration failed! (${response.status})`);
       }
     } catch (err: unknown) {
       console.error(err);
