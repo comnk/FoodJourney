@@ -1,3 +1,4 @@
+import EntryMap from "@/components/EntryMap/EntryMap";
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
 
@@ -16,6 +17,8 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
 
   const entry = await res.json();
 
+  console.log("entry location:", entry.latitude, entry.longitude);
+
   return (
     <div className="food-entry-page">
       <Navbar />
@@ -27,6 +30,9 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
         width={500}
         height={300}
       />
+      {entry.latitude && entry.longitude && (
+        <EntryMap lat={entry.latitude} lng={entry.longitude} />
+      )}
     </div>
   );
 }

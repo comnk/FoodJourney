@@ -32,8 +32,11 @@ public class FoodEntryController {
     public ResponseEntity<FoodEntry> createFoodEntry(
             @RequestParam String restaurantName,
             @RequestParam String dishName,
+            @RequestParam(required = false) Double latitude,
+            @RequestParam(required = false) Double longitude,
             @AuthenticationPrincipal UserDetails userDetails) {
-        FoodEntry entry = service.createFoodEntry(restaurantName, dishName, userDetails.getUsername());
+        FoodEntry entry = service.createFoodEntry(restaurantName, dishName, latitude, longitude,
+                userDetails.getUsername());
         return ResponseEntity.ok(entry);
     }
 

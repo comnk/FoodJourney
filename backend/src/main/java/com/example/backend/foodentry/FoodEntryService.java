@@ -36,12 +36,15 @@ public class FoodEntryService {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
     }
 
-    public FoodEntry createFoodEntry(String restaurantName, String dishName, String username) {
+    public FoodEntry createFoodEntry(String restaurantName, String dishName, Double latitude, Double longitude,
+            String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         FoodEntry entry = new FoodEntry();
         entry.setRestaurantName(restaurantName);
         entry.setDishName(dishName);
+        entry.setLatitude(latitude);
+        entry.setLongitude(longitude);
         entry.setUser(user);
         return repository.save(entry);
     }

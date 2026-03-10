@@ -66,8 +66,8 @@ export default function FoodEntryForm() {
         restaurantName: formData.restaurantName,
         dishName: formData.dishName,
         ...(selectedLocation && {
-          lat: selectedLocation.lat.toString(),
-          lng: selectedLocation.lng.toString(),
+          latitude: selectedLocation.lat.toString(),
+          longitude: selectedLocation.lng.toString(),
         }),
       });
 
@@ -78,7 +78,6 @@ export default function FoodEntryForm() {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: formData.photo,
         },
       );
 

@@ -30,4 +30,6 @@ public class FoodEntry {
     private String note;
     private String photoPath;
     private String photoContentType;
+    private Double latitude;
+    private Double longitude;
 }
