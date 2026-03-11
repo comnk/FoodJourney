@@ -23,11 +23,15 @@ export default function FoodEntryForm() {
   const [formData, setFormData] = useState<{
     restaurantName: string;
     dishName: string;
+    rating: number;
     photo: File | null;
+    notes: string;
   }>({
     restaurantName: "",
     dishName: "",
+    rating: 0,
     photo: null,
+    notes: "",
   });
 
   const [selectedLocation, setSelectedLocation] = useState<{
@@ -98,7 +102,13 @@ export default function FoodEntryForm() {
 
       if (photoResponse.ok) {
         console.log("Food entry submitted successfully!");
-        setFormData({ restaurantName: "", dishName: "", photo: null });
+        setFormData({
+          restaurantName: "",
+          dishName: "",
+          rating: 0,
+          photo: null,
+          notes: "",
+        });
         setSelectedLocation(null);
         router.push(`/food_entry/${entry.id}`);
       } else {
@@ -147,6 +157,33 @@ export default function FoodEntryForm() {
               setFormData({ ...formData, dishName: e.target.value })
             }
             required
+          />
+        </div>
+        <div>
+          <label htmlFor="rating">Rating:</label>
+          <input
+            type="number"
+            id="rating"
+            name="rating"
+            min="1"
+            max="5"
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                rating: parseInt(e.target.value) || 0,
+              })
+            }
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="notes">Notes:</label>
+          <textarea
+            id="notes"
+            name="notes"
+            onChange={(e) =>
+              setFormData({ ...formData, notes: e.target.value })
+            }
           />
         </div>
         <div>

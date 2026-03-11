@@ -17,19 +17,22 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
 
   const entry = await res.json();
 
-  console.log("entry location:", entry.latitude, entry.longitude);
-
   return (
     <div className="food-entry-page">
       <Navbar />
       <h1>{entry.dishName}</h1>
       <p>Restaurant: {entry.restaurantName}</p>
+      <p>Rating: {entry.rating}/5</p>
       <Image
         src={`/api/food_entry/${id}/photo`}
         alt={entry.dishName}
         width={500}
         height={300}
       />
+      <div>
+        <h2>Notes:</h2>
+        <p>{entry.notes}</p>
+      </div>
       {entry.latitude && entry.longitude && (
         <EntryMap lat={entry.latitude} lng={entry.longitude} />
       )}

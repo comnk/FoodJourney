@@ -1,5 +1,7 @@
 package com.example.backend.foodentry;
 
+import java.time.LocalDateTime;
+
 import com.example.backend.users.User;
 
 import jakarta.persistence.Entity;
@@ -26,8 +28,9 @@ public class FoodEntry {
 
     private String restaurantName;
     private String dishName;
-    private Integer rating;
-    private String note;
+    private Double rating;
+    private String notes;
+    private LocalDateTime time;
     private String photoPath;
     private String photoContentType;
     private Double latitude;
