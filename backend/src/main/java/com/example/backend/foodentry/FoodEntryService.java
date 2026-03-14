@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.core.io.FileSystemResource;
@@ -36,13 +37,17 @@ public class FoodEntryService {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
     }
 
-    public FoodEntry createFoodEntry(String restaurantName, String dishName, Double latitude, Double longitude,
+    public FoodEntry createFoodEntry(String restaurantName, String dishName, Double rating, String notes,
+            Double latitude, Double longitude,
             String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         FoodEntry entry = new FoodEntry();
         entry.setRestaurantName(restaurantName);
         entry.setDishName(dishName);
+        entry.setRating(rating);
+        entry.setNotes(notes);
+        entry.setTime(LocalDateTime.now());
         entry.setLatitude(latitude);
         entry.setLongitude(longitude);
         entry.setUser(user);

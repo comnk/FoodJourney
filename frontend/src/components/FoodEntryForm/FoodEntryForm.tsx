@@ -18,6 +18,7 @@ const defaultCenter = { lat: 39.8283, lng: -98.5795 };
 export default function FoodEntryForm() {
   const router = useRouter();
   const [hasSelectedPlace, setHasSelectedPlace] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
 
   const [formData, setFormData] = useState<{
@@ -62,6 +63,13 @@ export default function FoodEntryForm() {
 
     if (!formData.photo) {
       console.error("No photo selected");
+      setError("Please select a photo");
+      return;
+    }
+
+    if (formData.rating < 1 || formData.rating > 5) {
+      console.error("Rating must be between 1 and 5");
+      setError("Rating must be between 1 and 5");
       return;
     }
 
@@ -69,6 +77,8 @@ export default function FoodEntryForm() {
       const params = new URLSearchParams({
         restaurantName: formData.restaurantName,
         dishName: formData.dishName,
+        rating: formData.rating.toString(),
+        notes: formData.notes,
         ...(selectedLocation && {
           latitude: selectedLocation.lat.toString(),
           longitude: selectedLocation.lng.toString(),
@@ -87,6 +97,7 @@ export default function FoodEntryForm() {
 
       if (!response.ok) {
         console.error("Failed to submit food entry: ", response.statusText);
+        setError("Failed to submit food entry");
         return;
       }
 
@@ -97,7 +108,13 @@ export default function FoodEntryForm() {
 
       const photoResponse = await fetch(
         `http://localhost:8080/api/food_entry/${entry.id}/photo`,
-        { method: "POST", body: photoForm },
+        {
+          method: "POST",
+          body: photoForm,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
       );
 
       if (photoResponse.ok) {
@@ -113,9 +130,11 @@ export default function FoodEntryForm() {
         router.push(`/food_entry/${entry.id}`);
       } else {
         console.error("Photo upload failed:", photoResponse.statusText);
+        setError("Failed to upload photo");
       }
     } catch (error) {
       console.error("An error occurred: ", error);
+      setError("An error occurred while submitting the food entry");
     }
   };
 
@@ -201,6 +220,7 @@ export default function FoodEntryForm() {
         </div>
         <button type="submit">Submit</button>
       </form>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 }
