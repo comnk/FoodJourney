@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import "./dashboard.scss";
 import Link from "next/link";
-import Image from "next/image";
-
-type FoodEntry = { id: string; dishName: string; restaurantName: string };
+import FoodEntryCard, {
+  FoodEntry,
+} from "@/components/FoodEntryCard/FoodEntryCard";
 
 export default function DashboardPage() {
   const [entries, setEntries] = useState<FoodEntry[]>([]);
@@ -35,17 +35,7 @@ export default function DashboardPage() {
         ) : (
           <ul>
             {entries.map((entry) => (
-              <li key={entry.id}>
-                <Link href={`/food_entry/${entry.id}`}>
-                  {entry.dishName} at {entry.restaurantName}
-                </Link>
-                <Image
-                  src={`/api/food_entry/${entry.id}/photo`}
-                  alt={entry.dishName}
-                  width={100}
-                  height={60}
-                />
-              </li>
+              <FoodEntryCard key={entry.id} entry={entry} />
             ))}
           </ul>
         )}

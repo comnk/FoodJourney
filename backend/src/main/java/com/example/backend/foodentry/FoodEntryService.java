@@ -54,6 +54,11 @@ public class FoodEntryService {
         return repository.save(entry);
     }
 
+    public void deleteFoodEntry(Long id) {
+        FoodEntry entry = repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
+        repository.delete(entry);
+    }
+
     public FoodEntry setPhoto(Long id, MultipartFile file) throws IOException {
         FoodEntry entry = repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
         String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();

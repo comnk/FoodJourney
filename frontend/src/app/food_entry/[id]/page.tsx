@@ -1,3 +1,4 @@
+import DeleteEntryButton from "@/components/DeleteEntryButton/DeleteEntryButton";
 import EntryMap from "@/components/EntryMap/EntryMap";
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
@@ -45,9 +46,10 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
       <p>
         <b>Posted:</b> {formatEntryTime(entry.time)}
       </p>
+      <DeleteEntryButton id={id} />
       <h1>{entry.dishName}</h1>
       <p>Restaurant: {entry.restaurantName}</p>
-      <p>Rating: {entry.rating}/5</p>
+      <p>Rating: {"⭐".repeat(entry.rating)}</p>
       <Image
         src={`/api/food_entry/${id}/photo`}
         alt={entry.dishName}

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,16 +43,22 @@ public class FoodEntryController {
         return ResponseEntity.ok(entry);
     }
 
+    @GetMapping("/my_entries")
+    public ResponseEntity<Iterable<FoodEntry>> getAllFoodEntries(@AuthenticationPrincipal UserDetails userDetails) {
+        Iterable<FoodEntry> entries = service.getFoodEntriesByUsername(userDetails.getUsername());
+        return ResponseEntity.ok(entries);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<FoodEntry> getFoodEntry(@PathVariable Long id) {
         FoodEntry entry = service.getFoodEntry(id);
         return ResponseEntity.ok(entry);
     }
 
-    @GetMapping("/my_entries")
-    public ResponseEntity<Iterable<FoodEntry>> getAllFoodEntries(@AuthenticationPrincipal UserDetails userDetails) {
-        Iterable<FoodEntry> entries = service.getFoodEntriesByUsername(userDetails.getUsername());
-        return ResponseEntity.ok(entries);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFoodEntry(@PathVariable Long id) {
+        service.deleteFoodEntry(id);
+        return ResponseEntity.ok("Food entry deleted");
     }
 
     @PostMapping("/{id}/photo")
