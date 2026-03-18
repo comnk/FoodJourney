@@ -19,29 +19,11 @@ export default function Navbar() {
     return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/user/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.ok) {
-        localStorage.removeItem("token");
-        window.dispatchEvent(new Event("storage"));
-        setLoggedIn(false);
-        console.log("Logout successful");
-        router.push("/");
-      } else {
-        console.error("Logout failed: ", response.statusText);
-      }
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.dispatchEvent(new Event("storage"));
+    setLoggedIn(false);
+    router.push("/");
   };
 
   return (
@@ -62,6 +44,16 @@ export default function Navbar() {
             <Link href="/about">About</Link>
           )}
         </li>
+        {loggedIn && (
+          <li>
+            <Link href="/food_map">Map</Link>
+          </li>
+        )}
+        {loggedIn && (
+          <li>
+            <Link href="/gallery">Gallery</Link>
+          </li>
+        )}
         <li>
           {loggedIn ? (
             <button onClick={handleLogout} className="login-btn">

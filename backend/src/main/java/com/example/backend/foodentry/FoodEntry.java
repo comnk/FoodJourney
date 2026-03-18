@@ -1,6 +1,7 @@
 package com.example.backend.foodentry;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.example.backend.users.User;
 
@@ -29,6 +30,7 @@ public class FoodEntry {
     private String restaurantName;
     private String dishName;
     private Double rating;
+    private List<String> tags;
     private String notes;
     private LocalDateTime time;
     private String photoPath;

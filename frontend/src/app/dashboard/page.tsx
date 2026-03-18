@@ -9,6 +9,7 @@ import FoodEntryCard, {
 } from "@/components/FoodEntryCard/FoodEntryCard";
 
 export default function DashboardPage() {
+  const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState<FoodEntry[]>([]);
 
   useEffect(() => {
@@ -17,7 +18,10 @@ export default function DashboardPage() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then((data) => setEntries(data));
+      .then((data) => {
+        setEntries(data);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -30,7 +34,8 @@ export default function DashboardPage() {
       </p>
       <div className="entries-section">
         <h2>Your Food Entries</h2>
-        {entries.length === 0 ? (
+        {loading && <p>Loading...</p>}
+        {entries.length === 0 && !loading ? (
           <p>You have no food entries yet. Start by adding a new meal!</p>
         ) : (
           <ul>

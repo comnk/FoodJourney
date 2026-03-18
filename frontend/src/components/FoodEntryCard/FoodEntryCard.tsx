@@ -8,6 +8,9 @@ export type FoodEntry = {
   restaurantName: string;
   rating: number;
   time: string;
+  notes?: string;
+  latitude?: number;
+  longitude?: number;
 };
 
 export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {

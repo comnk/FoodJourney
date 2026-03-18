@@ -22,7 +22,7 @@ export default function Home() {
 
           <div className="hero-actions">
             <button className="primary-btn">
-              <Link href="/dashboard">Start a Trip</Link>
+              <Link href="/register">Try It Out!</Link>
             </button>
             <button className="secondary-btn">
               <Link href="/login">Log in</Link>
