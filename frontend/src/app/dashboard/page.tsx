@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import "./dashboard.scss";
 import Link from "next/link";
-import FoodEntryCard, {
-  FoodEntry,
-} from "@/components/FoodEntryCard/FoodEntryCard";
+import FoodEntryCard from "@/components/FoodEntryCard/FoodEntryCard";
+import { FoodEntry } from "@/types/FoodEntry";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("/api/food_entry/my_entries", {
+    fetch("/api/food_entry/three_most_recent", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -43,6 +42,9 @@ export default function DashboardPage() {
               <FoodEntryCard key={entry.id} entry={entry} />
             ))}
           </ul>
+        )}
+        {!loading && entries.length > 0 && (
+          <Link href="/gallery">See All Food Entries</Link>
         )}
       </div>
       <div>

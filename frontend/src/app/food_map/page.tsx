@@ -1,10 +1,17 @@
 "use client";
 
-import { FoodEntry } from "@/components/FoodEntryCard/FoodEntryCard";
 import { useGoogleMaps } from "@/components/GoogleMapsProvider/GoogleMapsProvider";
 import Navbar from "@/components/Navbar/Navbar";
+import FoodEntryCarousel from "@/components/FoodEntryCarousel/FoodEntryCarousel";
+import { FoodEntry } from "@/types/FoodEntry";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import { useState, useEffect, useCallback, useRef } from "react";
+
+interface LocationGroup {
+  lat: number;
+  lng: number;
+  entries: FoodEntry[];
+}
 
 const mapContainerStyle = {
   width: "100%",
@@ -15,10 +22,31 @@ const mapContainerStyle = {
 const defaultCenter = { lat: 39.8283, lng: -98.5795 };
 const defaultZoom = 4;
 
+function groupEntriesByLocation(entries: FoodEntry[]): LocationGroup[] {
+  const locationMap: { [key: string]: FoodEntry[] } = {};
+
+  entries.forEach((entry) => {
+    if (entry.latitude !== undefined && entry.longitude !== undefined) {
+      const key = `${entry.latitude.toFixed(4)}_${entry.longitude.toFixed(4)}`;
+      if (!locationMap[key]) {
+        locationMap[key] = [];
+      }
+      locationMap[key].push(entry);
+    }
+  });
+
+  return Object.entries(locationMap).map(([key, groupEntries]) => {
+    const [lat, lng] = key.split("_").map(Number);
+    return { lat, lng, entries: groupEntries };
+  });
+}
+
 export default function FoodMapPage() {
   const { isLoaded } = useGoogleMaps();
   const [entries, setEntries] = useState<FoodEntry[]>([]);
-  const [selectedEntry, setSelectedEntry] = useState<FoodEntry | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<LocationGroup | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -26,6 +54,8 @@ export default function FoodMapPage() {
   const onMapLoad = useCallback((map: google.maps.Map) => {
     mapRef.current = map;
   }, []);
+
+  const locationGroups = groupEntriesByLocation(entries);
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -102,41 +132,32 @@ export default function FoodMapPage() {
           zoom={defaultZoom}
           onLoad={onMapLoad}
         >
-          {mappableEntries.map((entry) => (
+          {locationGroups.map((group, i) => (
             <Marker
-              key={entry.id}
-              position={{ lat: entry.latitude!, lng: entry.longitude! }}
-              onClick={() => setSelectedEntry(entry)}
+              key={i}
+              position={{ lat: group.lat, lng: group.lng }}
+              onClick={() => setSelectedGroup(group)}
+              label={
+                group.entries.length > 1
+                  ? {
+                      text: String(group.entries.length),
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }
+                  : undefined
+              }
             />
           ))}
 
-          {selectedEntry &&
-            selectedEntry.latitude &&
-            selectedEntry.longitude && (
-              <InfoWindow
-                position={{
-                  lat: selectedEntry.latitude,
-                  lng: selectedEntry.longitude,
-                }}
-                onCloseClick={() => setSelectedEntry(null)}
-              >
-                <div>
-                  <h3>{selectedEntry.restaurantName}</h3>
-                  <p>
-                    <strong>Dish:</strong> {selectedEntry.dishName}
-                  </p>
-                  <p>
-                    <strong>Rating:</strong> {selectedEntry.rating} / 5
-                  </p>
-                  {selectedEntry.notes && (
-                    <p>
-                      <strong>Notes:</strong> {selectedEntry.notes}
-                    </p>
-                  )}
-                  <a href={`/food_entry/${selectedEntry.id}`}>View Details</a>
-                </div>
-              </InfoWindow>
-            )}
+          {selectedGroup && (
+            <InfoWindow
+              position={{ lat: selectedGroup.lat, lng: selectedGroup.lng }}
+              onCloseClick={() => setSelectedGroup(null)}
+            >
+              <FoodEntryCarousel entries={selectedGroup.entries} />
+            </InfoWindow>
+          )}
         </GoogleMap>
       </div>
     </div>

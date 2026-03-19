@@ -33,6 +33,12 @@ public class FoodEntryService {
         return repository.findByUser(user);
     }
 
+    public Iterable<FoodEntry> getThreeMostRecentFoodEntries(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findTop3ByUserOrderByTimeDesc(user);
+    }
+
     public FoodEntry getFoodEntry(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
     }

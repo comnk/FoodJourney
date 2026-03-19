@@ -1,17 +1,7 @@
 import Link from "next/link";
 import "./FoodEntryCard.scss";
 import Image from "next/image";
-
-export type FoodEntry = {
-  id: string;
-  dishName: string;
-  restaurantName: string;
-  rating: number;
-  time: string;
-  notes?: string;
-  latitude?: number;
-  longitude?: number;
-};
+import { FoodEntry } from "@/types/FoodEntry";
 
 export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {
   return (

@@ -49,6 +49,13 @@ public class FoodEntryController {
         return ResponseEntity.ok(entries);
     }
 
+    @GetMapping("/three_most_recent")
+    public ResponseEntity<Iterable<FoodEntry>> getThreeMostRecentFoodEntries(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Iterable<FoodEntry> entries = service.getThreeMostRecentFoodEntries(userDetails.getUsername());
+        return ResponseEntity.ok(entries);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<FoodEntry> getFoodEntry(@PathVariable Long id) {
         FoodEntry entry = service.getFoodEntry(id);
