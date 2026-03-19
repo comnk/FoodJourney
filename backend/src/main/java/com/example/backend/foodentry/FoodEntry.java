@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.backend.users.User;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +31,10 @@ public class FoodEntry {
     private String restaurantName;
     private String dishName;
     private Double rating;
+
+    @ElementCollection
     private List<String> tags;
+
     private String notes;
     private LocalDateTime time;
     private String photoPath;

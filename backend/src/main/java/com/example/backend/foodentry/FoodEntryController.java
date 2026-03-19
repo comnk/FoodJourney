@@ -38,9 +38,13 @@ public class FoodEntryController {
             @RequestParam(required = false) Double latitude,
             @RequestParam(required = false) Double longitude,
             @AuthenticationPrincipal UserDetails userDetails) {
-        FoodEntry entry = service.createFoodEntry(restaurantName, dishName, rating, notes, latitude, longitude,
+
+        FoodEntry entry = service.createFoodEntry(
+                restaurantName, dishName, rating, notes, latitude, longitude,
                 userDetails.getUsername());
-        return ResponseEntity.ok(entry);
+
+        FoodEntry entryWithTags = service.generateAndSaveTags(entry.getId(), restaurantName, dishName, notes);
+        return ResponseEntity.ok(entryWithTags);
     }
 
     @GetMapping("/my_entries")

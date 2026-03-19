@@ -60,6 +60,14 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
         <h2>Notes:</h2>
         <p>{entry.notes}</p>
       </div>
+      <div>
+        <h2>Tags:</h2>
+        <ul>
+          {entry.tags.map((tag: string) => (
+            <li key={tag}>{tag}</li>
+          ))}
+        </ul>
+      </div>
       {entry.latitude && entry.longitude && (
         <EntryMap lat={entry.latitude} lng={entry.longitude} />
       )}

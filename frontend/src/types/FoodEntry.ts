@@ -3,6 +3,7 @@ export type FoodEntry = {
   dishName: string;
   restaurantName: string;
   rating: number;
+  tags: string[];
   time: string;
   notes?: string;
   latitude?: number;

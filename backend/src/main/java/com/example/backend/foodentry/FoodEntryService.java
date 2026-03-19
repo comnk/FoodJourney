@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.core.io.FileSystemResource;
@@ -13,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.ai.GeminiService;
 import com.example.backend.users.User;
 import com.example.backend.users.UserRepository;
 
@@ -20,11 +23,14 @@ import com.example.backend.users.UserRepository;
 public class FoodEntryService {
     private final FoodEntryRepository repository;
     private final UserRepository userRepository;
+    private final GeminiService geminiService;
     private static final String UPLOAD_DIR = "uploads/photos/";
 
-    public FoodEntryService(FoodEntryRepository repository, UserRepository userRepository) {
+    public FoodEntryService(FoodEntryRepository repository, UserRepository userRepository,
+            GeminiService geminiService) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.geminiService = geminiService;
     }
 
     public Iterable<FoodEntry> getFoodEntriesByUsername(String username) {
@@ -79,6 +85,25 @@ public class FoodEntryService {
             entry.setPhotoContentType(file.getContentType());
         }
 
+        return repository.save(entry);
+    }
+
+    public FoodEntry generateAndSaveTags(Long id, String restaurantName, String dishName, String notes) {
+        FoodEntry entry = repository.findById(id).orElseThrow(() -> new RuntimeException("Food entry not found"));
+
+        String prompt = String.format(
+                "Given the restaurant name '%s', dish name '%s', and notes '%s', " +
+                        "generate a comma-separated list of short relevant tags only. " +
+                        "No bullet points, no numbering, no explanation. Example: italian, pasta, cozy, downtown",
+                restaurantName, dishName, notes);
+        String aiResponse = geminiService.getAnswer(prompt);
+
+        List<String> tags = Arrays.stream(aiResponse.split("[,\n]"))
+                .map(tag -> tag.replaceAll("^[*\\-•\\d.\\s]+", "").trim())
+                .filter(tag -> !tag.isEmpty())
+                .collect(java.util.stream.Collectors.toCollection(java.util.ArrayList::new));
+
+        entry.setTags(tags);
         return repository.save(entry);
     }
 

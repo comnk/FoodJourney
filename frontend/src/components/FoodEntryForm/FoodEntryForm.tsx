@@ -89,14 +89,11 @@ export default function FoodEntryForm() {
         `http://localhost:8080/api/food_entry/new?${params.toString()}`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         },
       );
 
       if (!response.ok) {
-        console.error("Failed to submit food entry: ", response.statusText);
         setError("Failed to submit food entry");
         return;
       }

@@ -16,6 +16,7 @@ export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {
         height={60}
       />
       <p>Rating: {"⭐".repeat(entry.rating)}</p>
+      <p>Tags: {entry.tags.join(", ")}</p>
       <p>Posted At: {entry.time}</p>
     </div>
   );
