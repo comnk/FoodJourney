@@ -1,0 +1,48 @@
+services:
+  db:
+    container_name: spring-boot-db
+    image: "postgres:latest"
+
+    ports:
+      - 5332:5432
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: JALENlewis2023!$
+      POSTGRES_DB: project_db
+
+  backend:
+    build:
+      context: ./backend
+    container_name: spring-boot-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      OPENAI_KEY: ${OPENAI_KEY}
+      YOUTUBE_KEY: ${YOUTUBE_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      SESSION_SECRET_KEY: ${SESSION_SECRET_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+
+  ui:
+    build:
+      context: ./frontend
+    container_name: nextjs-ui
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
