@@ -2,6 +2,7 @@ import Link from "next/link";
 import "./FoodEntryCard.scss";
 import Image from "next/image";
 import { FoodEntry } from "@/types/FoodEntry";
+import { formatEntryTime } from "@/utils/formatEntryTime";
 
 export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {
   return (
@@ -17,7 +18,7 @@ export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {
       />
       <p>Rating: {"⭐".repeat(entry.rating)}</p>
       <p>Tags: {entry.tags.join(", ")}</p>
-      <p>Posted At: {entry.time}</p>
+      <p>Posted At: {formatEntryTime(entry.time)}</p>
     </div>
   );
 }

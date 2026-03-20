@@ -22,14 +22,16 @@ export default function FoodEntryCarousel({
             <strong>Dish:</strong> {entry.dishName}
           </p>
           <p>
-            <strong>Rating:</strong> {entry.rating} / 5
+            <strong>Rating:</strong> {"⭐".repeat(entry.rating)}
           </p>
           {entry.notes && (
             <p>
               <strong>Notes:</strong> {entry.notes}
             </p>
           )}
-          <Link href={`/food_entry/${entry.id}`}>View Details</Link>
+          <button>
+            <Link href={`/food_entry/${entry.id}`}>View Details</Link>
+          </button>
         </div>
       ))}
     </Carousel>
