@@ -6,19 +6,34 @@ import { formatEntryTime } from "@/utils/formatEntryTime";
 
 export default function FoodEntryCard({ entry }: { entry: FoodEntry }) {
   return (
-    <div key={entry.id} className="food-entry-card">
-      <Link href={`/food_entry/${entry.id}`}>
-        {entry.dishName} at {entry.restaurantName}
+    <div className="food-entry-card">
+      <Link href={`/food_entry/${entry.id}`} className="card-photo">
+        <Image
+          src={`/api/food_entry/${entry.id}/photo`}
+          alt={entry.dishName}
+          fill
+          sizes="(max-width: 600px) 100vw, 320px"
+        />
       </Link>
-      <Image
-        src={`/api/food_entry/${entry.id}/photo`}
-        alt={entry.dishName}
-        width={100}
-        height={60}
-      />
-      <p>Rating: {"⭐".repeat(entry.rating)}</p>
-      <p>Tags: {entry.tags.join(", ")}</p>
-      <p>Posted At: {formatEntryTime(entry.time)}</p>
+
+      <div className="card-body">
+        <Link href={`/food_entry/${entry.id}`} className="card-title">
+          {entry.dishName}
+        </Link>
+        <p className="card-restaurant">{entry.restaurantName}</p>
+
+        <div className="card-rating">{"⭐".repeat(entry.rating)}</div>
+
+        {entry.tags?.length > 0 && (
+          <div className="card-tags">
+            {entry.tags.map((tag: string) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+        )}
+
+        <div className="card-footer">{formatEntryTime(entry.time)}</div>
+      </div>
     </div>
   );
 }

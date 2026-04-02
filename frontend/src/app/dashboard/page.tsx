@@ -24,34 +24,70 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div>
+    <div className="dashboard-page">
       <Navbar />
-      <h1>Dashboard</h1>
-      <p>
-        Welcome to the dashboard! Here you can find an overview of your recent
-        food entries and activities.
-      </p>
-      <div className="entries-section">
-        <h2>Your Food Entries</h2>
-        {loading && <p>Loading...</p>}
-        {entries.length === 0 && !loading ? (
-          <p>You have no food entries yet. Start by adding a new meal!</p>
-        ) : (
-          <ul>
+
+      <header className="dashboard-hero">
+        <p className="dashboard-eyebrow">Your food diary</p>
+        <h1 className="dashboard-title">
+          Every meal,
+          <br />
+          <em>remembered.</em>
+        </h1>
+        <p className="dashboard-subtitle">
+          An overview of your recent culinary adventures. Log a dish, rate it,
+          and build your personal flavour atlas.
+        </p>
+
+        <Link href="/food_entry/new" className="cta-btn">
+          New Food Entry
+        </Link>
+      </header>
+
+      <hr className="dash-rule" />
+
+      <section className="entries-section">
+        <div className="entries-header">
+          <h2 className="entries-title">Recent Entries</h2>
+          {!loading && entries.length > 0 && (
+            <Link href="/gallery" className="see-all-link">
+              See all entries →
+            </Link>
+          )}
+        </div>
+
+        {loading && (
+          <div
+            className="loading-row"
+            aria-busy="true"
+            aria-label="Loading entries"
+          >
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+          </div>
+        )}
+
+        {!loading && entries.length === 0 && (
+          <div className="empty-state">
+            <span className="empty-icon">🍜</span>
+            <p>
+              No entries yet. Your first great meal is waiting to be logged.
+            </p>
+            <Link href="/food_entry/new" className="cta-btn">
+              Add your first dish
+            </Link>
+          </div>
+        )}
+
+        {!loading && entries.length > 0 && (
+          <ul className="entries-list">
             {entries.map((entry) => (
               <FoodEntryCard key={entry.id} entry={entry} />
             ))}
           </ul>
         )}
-        {!loading && entries.length > 0 && (
-          <Link href="/gallery">See All Food Entries</Link>
-        )}
-      </div>
-      <div>
-        <button>
-          <Link href="/food_entry/new">New Food Entry</Link>
-        </button>
-      </div>
+      </section>
     </div>
   );
 }

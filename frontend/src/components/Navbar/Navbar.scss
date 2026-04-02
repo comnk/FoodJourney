@@ -1,56 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
+
 .navbar {
-  background: #111;
-  padding: 1rem 2rem;
+  background: #1e1812;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 60px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100;
+  border-bottom: 1px solid rgba(232, 213, 188, 0.10);
 }
 
 .logo {
-  font-size: 1.6rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: #e85d04;
+  color: #e07b39;
   text-decoration: none;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  cursor: pointer;
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.85;
-  }
+  &:hover { opacity: 0.8; }
 }
 
 .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   list-style: none;
   margin: 0;
   padding: 0;
   align-items: center;
+  font-family: 'DM Sans', sans-serif;
 
   a {
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.2s ease;
+    color: rgba(253, 248, 242, 0.65);
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    transition: color 0.18s ease;
 
     &:hover {
-      color: #fff;
+      color: #fdf8f2;
     }
   }
 }
 
 .login-btn {
-  border: 1px solid rgba(232, 93, 4, 0.6);
-  padding: 0.4rem 1.1rem;
+  background: transparent;
+  border: 1.5px solid rgba(192, 57, 43, 0.55);
+  padding: 0.38rem 1.1rem;
   border-radius: 8px;
-  color: #e85d04 !important;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+  color: #e07b39 !important;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease !important;
 
   &:hover {
-    background: #e85d04;
-    border-color: #e85d04;
-    color: #fff !important;
+    background: #c0392b;
+    border-color: #c0392b;
+    color: #fdf8f2 !important;
   }
 }

@@ -1,7 +1,111 @@
+// FoodEntryCard.scss
+// Warm editorial food diary — Entry card
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --cream:     #fdf8f2;
+  --warm-100:  #f5ece0;
+  --warm-200:  #e8d5bc;
+  --ink:       #1e1812;
+  --ink-muted: #6b5c4e;
+  --accent:    #c0392b;
+  --accent-lt: #f4ded9;
+  --accent-o:  #e07b39;
+  --radius:    12px;
+  --shadow:    0 4px 24px rgba(30, 24, 18, 0.08);
+}
+
 .food-entry-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
+  background: #fff;
+  border: 1.5px solid var(--warm-200);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 36px rgba(30, 24, 18, 0.13);
+  }
+
+  .card-photo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--warm-100);
+
+    img {
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+  }
+
+  &:hover .card-photo img {
+    transform: scale(1.04);
+  }
+
+  .card-body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.25;
     display: block;
-    margin: 16px 0;
-    background-color: #fff;
+
+    &:hover { color: var(--accent); }
+  }
+
+  .card-restaurant {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    margin: -6px 0 0;
+  }
+
+  .card-rating {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    span {
+      display: inline-flex;
+      padding: 3px 10px;
+      background: var(--warm-100);
+      border: 1.5px solid var(--warm-200);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+
+      &::before { content: '#'; margin-right: 1px; color: var(--warm-200); }
+    }
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--warm-100);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.02em;
+  }
 }

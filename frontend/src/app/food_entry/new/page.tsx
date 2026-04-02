@@ -4,7 +4,7 @@ import FoodEntryForm from "@/components/FoodEntryForm/FoodEntryForm";
 
 export default function NewFoodEntryPage() {
   return (
-    <div>
+    <div className="page-wrapper">
       <Navbar />
       <FoodEntryForm />
     </div>

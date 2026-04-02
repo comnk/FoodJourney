@@ -5,12 +5,11 @@ import { Autocomplete, GoogleMap, Marker } from "@react-google-maps/api";
 import "./FoodEntryForm.scss";
 import { useRouter } from "next/navigation";
 import { useGoogleMaps } from "../GoogleMapsProvider/GoogleMapsProvider";
+import Image from "next/image";
 
 const mapContainerStyle = {
   width: "100%",
   height: "300px",
-  borderRadius: "8px",
-  marginTop: "12px",
 };
 
 const defaultCenter = { lat: 39.8283, lng: -98.5795 };
@@ -42,7 +41,7 @@ export default function FoodEntryForm() {
 
   const { isLoaded } = useGoogleMaps();
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div>Loading map…</div>;
 
   const handlePlaceChanged = () => {
     const place = autocompleteRef.current?.getPlace();
@@ -62,13 +61,10 @@ export default function FoodEntryForm() {
     e.preventDefault();
 
     if (!formData.photo) {
-      console.error("No photo selected");
       setError("Please select a photo");
       return;
     }
-
     if (formData.rating < 1 || formData.rating > 5) {
-      console.error("Rating must be between 1 and 5");
       setError("Rating must be between 1 and 5");
       return;
     }
@@ -108,116 +104,146 @@ export default function FoodEntryForm() {
         {
           method: "POST",
           body: photoForm,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         },
       );
 
       if (photoResponse.ok) {
-        console.log("Food entry submitted successfully!");
-        setFormData({
-          restaurantName: "",
-          dishName: "",
-          rating: 0,
-          photo: null,
-          notes: "",
-        });
-        setSelectedLocation(null);
         router.push(`/food_entry/${entry.id}`);
       } else {
-        console.error("Photo upload failed:", photoResponse.statusText);
         setError("Failed to upload photo");
       }
-    } catch (error) {
-      console.error("An error occurred: ", error);
+    } catch {
       setError("An error occurred while submitting the food entry");
     }
   };
 
   return (
-    <div>
-      <h1>Food Entry Form</h1>
-      <form className="form" onSubmit={handleSubmission}>
-        <div>
-          <label htmlFor="restaurantName">Restaurant Name:</label>
-          <Autocomplete
-            onLoad={(ref) => (autocompleteRef.current = ref)}
-            onPlaceChanged={handlePlaceChanged}
-          >
+    <div className="food-entry-page">
+      <h1>New Entry</h1>
+      <p className="page-subtitle">Document a dish worth remembering.</p>
+
+      <div className="form-card">
+        <form className="form" onSubmit={handleSubmission}>
+          <div className="field">
+            <label htmlFor="restaurantName">Restaurant</label>
+            <Autocomplete
+              onLoad={(ref) => (autocompleteRef.current = ref)}
+              onPlaceChanged={handlePlaceChanged}
+            >
+              <input
+                type="text"
+                id="restaurantName"
+                name="restaurantName"
+                placeholder="Search for a restaurant…"
+                onChange={(e) =>
+                  setFormData({ ...formData, restaurantName: e.target.value })
+                }
+                required
+              />
+            </Autocomplete>
+
+            <div className="map-section">
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                center={selectedLocation ?? defaultCenter}
+                zoom={hasSelectedPlace ? 17.5 : 4}
+              >
+                {hasSelectedPlace && <Marker position={selectedLocation!} />}
+              </GoogleMap>
+            </div>
+          </div>
+
+          <hr className="form-divider" />
+
+          <div className="field">
+            <label htmlFor="dishName">Dish Name</label>
             <input
               type="text"
-              id="restaurantName"
-              name="restaurantName"
+              id="dishName"
+              name="dishName"
+              placeholder="e.g. Tonkotsu Ramen"
               onChange={(e) =>
-                setFormData({ ...formData, restaurantName: e.target.value })
+                setFormData({ ...formData, dishName: e.target.value })
               }
               required
             />
-          </Autocomplete>
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={selectedLocation ?? defaultCenter}
-            zoom={hasSelectedPlace ? 17.5 : 4}
-          >
-            {hasSelectedPlace && <Marker position={selectedLocation!} />}
-          </GoogleMap>
-        </div>
-        <div>
-          <label htmlFor="dishName">Dish Name:</label>
-          <input
-            type="text"
-            id="dishName"
-            name="dishName"
-            onChange={(e) =>
-              setFormData({ ...formData, dishName: e.target.value })
-            }
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="rating">Rating:</label>
-          <input
-            type="number"
-            id="rating"
-            name="rating"
-            min="1"
-            max="5"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                rating: parseInt(e.target.value) || 0,
-              })
-            }
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="notes">Notes:</label>
-          <textarea
-            id="notes"
-            name="notes"
-            onChange={(e) =>
-              setFormData({ ...formData, notes: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="photo">Photo:</label>
-          <input
-            type="file"
-            id="photo"
-            name="photo"
-            accept="image/*"
-            onChange={(e) =>
-              setFormData({ ...formData, photo: e.target.files?.[0] ?? null })
-            }
-            required
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      {error && <p className="error">{error}</p>}
+          </div>
+
+          <div className="field">
+            <label htmlFor="rating">Rating</label>
+            <input
+              type="number"
+              id="rating"
+              name="rating"
+              min="1"
+              max="5"
+              placeholder="1–5"
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  rating: parseInt(e.target.value) || 0,
+                })
+              }
+              required
+            />
+            <span className="rating-hint">1 = poor · 5 = exceptional</span>
+          </div>
+
+          <div className="field">
+            <label htmlFor="notes">Notes</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="What made this meal memorable?"
+              onChange={(e) =>
+                setFormData({ ...formData, notes: e.target.value })
+              }
+            />
+          </div>
+
+          <hr className="form-divider" />
+
+          <div className="field photo-upload">
+            <label>Photo</label>
+            <div className="photo-dropzone">
+              <span className="dropzone-icon">📷</span>
+              <p>Click to choose a photo</p>
+              <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    photo: e.target.files?.[0] ?? null,
+                  })
+                }
+                required
+              />
+            </div>
+
+            {formData.photo && (
+              <div className="photo-preview">
+                <Image
+                  src={URL.createObjectURL(formData.photo)}
+                  alt="Preview"
+                  width={300}
+                  height={200}
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            )}
+          </div>
+
+          <button type="submit" className="submit-btn">
+            Save Entry
+          </button>
+        </form>
+
+        {error && <p className="error">{error}</p>}
+      </div>
     </div>
   );
 }
