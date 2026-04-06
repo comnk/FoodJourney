@@ -30,6 +30,7 @@ export default async function FoodEntryPage({ params }: { params: Params }) {
           <p className="entry-timestamp">
             <strong>Posted:</strong> {formatEntryTime(entry.time)}
           </p>
+          <button>Share Entry</button>
           <DeleteEntryButton id={id} />
         </div>
 

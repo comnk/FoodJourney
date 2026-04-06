@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
 
 .navbar {
-  background: #1e1812;
+  background: oklch(27.4% 0.006 286.033);
   padding: 0 2rem;
   display: flex;
   justify-content: space-between;
@@ -18,7 +18,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.45rem;
   font-weight: 700;
-  color: #e07b39;
+  color: oklch(57.7% 0.245 27.325);
   text-decoration: none;
   letter-spacing: -0.01em;
   cursor: pointer;
@@ -52,10 +52,10 @@
 
 .login-btn {
   background: transparent;
-  border: 1.5px solid rgba(192, 57, 43, 0.55);
+  border: 1.5px solid oklch(57.7% 0.245 27.325);
   padding: 0.38rem 1.1rem;
   border-radius: 8px;
-  color: #e07b39 !important;
+  color: oklch(57.7% 0.245 27.325) !important;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.88rem;
   font-weight: 500;
