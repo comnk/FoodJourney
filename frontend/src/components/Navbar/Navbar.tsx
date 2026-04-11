@@ -39,7 +39,7 @@ export default function Navbar() {
       <ul className="nav-links">
         <li>
           {loggedIn ? (
-            <Link href="/food_entry/new">Add Food Entry</Link>
+            <Link href="/trips">Trips</Link>
           ) : (
             <Link href="/about">About</Link>
           )}

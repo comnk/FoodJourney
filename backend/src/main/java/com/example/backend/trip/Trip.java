@@ -1,5 +1,6 @@
 package com.example.backend.trip;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -19,6 +20,9 @@ public class Trip {
 
     private String tripName;
     private String description;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private List<Long> foodEntryIds;
 }

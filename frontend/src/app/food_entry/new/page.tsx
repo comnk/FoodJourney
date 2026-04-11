@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar/Navbar";
 import "./food_entry_new.scss";
-import FoodEntryForm from "@/components/FoodEntryForm/FoodEntryForm";
+import FoodEntryForm from "@/components/forms/FoodEntryForm/FoodEntryForm";
 
 export default function NewFoodEntryPage() {
   return (

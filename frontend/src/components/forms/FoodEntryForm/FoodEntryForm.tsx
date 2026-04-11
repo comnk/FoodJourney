@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Autocomplete, GoogleMap, Marker } from "@react-google-maps/api";
 import "./FoodEntryForm.scss";
 import { useRouter } from "next/navigation";
-import { useGoogleMaps } from "../GoogleMapsProvider/GoogleMapsProvider";
+import { useGoogleMaps } from "@/components/GoogleMapsProvider/GoogleMapsProvider";
 import Image from "next/image";
 
 const mapContainerStyle = {

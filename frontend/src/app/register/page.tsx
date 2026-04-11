@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar/Navbar";
 import "./register.scss";
-import RegisterForm from "@/components/RegisterForm/RegisterForm";
+import RegisterForm from "@/components/forms/RegisterForm/RegisterForm";
 
 export default function RegisterPage() {
   return (

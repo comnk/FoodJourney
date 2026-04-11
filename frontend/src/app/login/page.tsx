@@ -1,6 +1,6 @@
 "use client";
 
-import LoginForm from "@/components/LoginForm/LoginForm";
+import LoginForm from "@/components/forms/LoginForm/LoginForm";
 import "./login.scss";
 import Navbar from "@/components/Navbar/Navbar";
 import { useEffect } from "react";
